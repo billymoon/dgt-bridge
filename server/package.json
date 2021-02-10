@@ -1,0 +1,16 @@
+{
+  "name": "dgt-bridge-server",
+  "version": "0.0.1",
+  "description": "simple dgt board position publishing service",
+  "main": "dgt-zeromq-server.js",
+  "scripts": {
+    "start": "node dgt-zeromq-server"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "serialport": "^9.0.6",
+    "zeromq": "^6.0.0-beta.6"
+  }
+}
