@@ -37,23 +37,35 @@ void (async () => {
     const serialNumber = await getSerialNumber();
     const version = await getVersion();
 
-    console.log(`Connected to board: ${{ serialNumber, version }}`);
+    console.log(`Connected to board: ${JSON.stringify({ serialNumber, version })}`);
 
     let position = "";
 
+    // let heartbeat = 0
     while (true) {
       const nextPosition = JSON.stringify(await getBoard());
       if (nextPosition !== position) {
         position = nextPosition;
-        const message = {
+        const message = JSON.stringify({
           timestamp: new Date().toISOString(),
           serialNumber,
           version,
           position: JSON.parse(position),
-        };
+        });
         console.log(message);
-        await socket.send(["dgt-board:position", JSON.stringify(message)]);
+        await socket.send(["dgt-board:position", message]);
       }
+
+      // if (heartbeat++ === 10) {
+      //   heartbeat = 0
+      //   const message = {
+      //     timestamp: new Date().toISOString(),
+      //     serialNumber,
+      //     version,
+      //     position: JSON.parse(position),
+      //   };
+      //   await socket.send(["dgt-board:position", JSON.stringify(message)]);
+      // }
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
   });
