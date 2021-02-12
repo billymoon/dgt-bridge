@@ -42,7 +42,7 @@ const boardConnector = (port) =>
                 callback: (data) => resolve(returnDataHandler(data)),
               });
             })
-        : serialport.write(Buffer.from(messageTypeCode, "hex"));
+        : () => serialport.write(Buffer.from(messageTypeCode, "hex"));
 
       return {
         [methodName]: method,
@@ -60,7 +60,8 @@ const boardConnector = (port) =>
       serialport.open((err) => {
         if (tries--) {
           if (err) {
-            console.log({ err });
+            // console.log({ err });
+            process.stdout.write('.')
             setTimeout(openSerialPort, 2000);
           } else {
             resolve(board);
@@ -71,6 +72,7 @@ const boardConnector = (port) =>
       });
     };
 
+    process.stdout.write('Connecting to board')
     openSerialPort();
   });
 

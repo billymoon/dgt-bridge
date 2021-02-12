@@ -1,13 +1,14 @@
 const boardConnector = require("./board-connector");
 
 const loadBoard = async (port, callback) => {
-  const { reset, getBoard, getSerialNumber, getVersion } = await boardConnector(
+  const { reset, getBoard, getSerialNumber, getVersion, close } = await boardConnector(
     port
   );
 
   await reset();
   const serialNumber = await getSerialNumber();
   const version = await getVersion();
+  const initialPosition = await getBoard()
 
   console.log(
     `Connected to board: ${JSON.stringify({ serialNumber, version })}`
@@ -28,8 +29,17 @@ const loadBoard = async (port, callback) => {
         })
       );
     }
-    setTimeout(checkForNewPosition, 200)
-  }
+    setTimeout(checkForNewPosition, 200);
+  };
+
+  checkForNewPosition();
+
+  return {
+    serialNumber,
+    version,
+    initialPosition,
+    close
+  };
 };
 
-module.exports = loadBoard
+module.exports = loadBoard;
