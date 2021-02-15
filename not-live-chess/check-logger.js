@@ -1,7 +1,6 @@
 const { exec } = require("child_process");
 const { Chess } = require("chess.js");
-// const logger = require("./dgt-logger");
-const logger = require("./dgt-logger/socket");
+const logger = require(process.env.SOCK ? "./dgt-logger-socket/client" : "./dgt-logger")
 const { moveAsSpoken, startPosition } = require("./dgt-logger/chess-utils");
 
 const say = (words, ...others) => {
@@ -38,7 +37,6 @@ const handleBoard = (info) => {
 
 void (async () => {
   const { info, subscribe } = await logger();
-
   say`connected!`;
   handleBoard(info());
   subscribe(handleBoard);

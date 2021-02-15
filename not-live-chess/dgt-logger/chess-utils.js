@@ -53,10 +53,10 @@ const moveAsSpoken = (move) => {
   } else if (target === "O-O-O") {
     return "Castles long";
   } else if (target) {
-    return `${pieceNames[(protagonist || "p").toLowerCase()]}${
-      rank ? `on rank ${rank}` : ""
-    }${file ? `on file ${file}` : ""}${takes ? " takes" : ""} ${target}${
-      check ? " check to the king" : ""
+    return `${protagonist ? pieceNames[protagonist.toLowerCase()] : ''}${
+      rank ? rank : ""
+    }${file ? file : ""}${takes ? " takes" : ""} ${target.replace('a', 'a:')}${
+      check ? " check" : ""
     }${checkmate ? " checkmate!!" : ""}`;
   } else {
     console.log({ move });
